@@ -1,6 +1,6 @@
 ---
-title: "Weekly Summary Template"
-author: "Author Name"
+title: "Weekly Summary Week 13"
+author: "Jack Benadon"
 title-block-banner: true
 title-block-style: default
 toc: true
@@ -28,19 +28,69 @@ Provide more concrete details here. You can also use footenotes[^footnote] if yo
 
 ```{R results='hide'}
 #| output: false
-library(dplyr)
-library(purrr)
+library(dplyr) 
+library(purrr) 
+library(glmnet)
+library(torch)
+library(ISLR2)
+library(tidyr) 
+library(readr) 
+library(caret)
+library(mlbench)
+library(nnet)
+library(class)
+library(rpart)
+library(e1071) 
+library(luz) 
+library(torchvision)
 ```
 
+### PCA
 
-For example: 
-in class we learnt we learnt about the `map` function from the `purrr` package. 
+##### Inforamtion in this context refers to variability in the data
 
+__Step 1 of PCA__
+The first principal component $Z_1$ is the normalized linear combination of the features
 
-```{R results='hide', fig.width=7, fig.height=7}
-par(mfrow=c(3, 3), mar=c(3.5, 3.5, 2, 1), mgp=c(2.4, 0.8, 0))
-map(1:9, function(i)rnorm(1000) %>% hist(., main=i, col=i))
+such that 
+- $Z_1$ has the largest possible variance
+- the sum of the squares is = 1 _(This is to put a threshold on $Z_1$)_
+
+__Step 2__
+the second principal component $Z_2$ is the normalized linear combination of the features:
+
+such that
+- $V_2$ is orthogonal to $V_1$
+- $Z_2$ has the largest possible variance
+- the sum of the squares is = 1 _(This is to put a threshold on $Z_1$)_
+
+__Step q__
+The qth principal component $Z_q$ is the normalized linear combination of the features:
+
+such that:
+- $Z-q$  has the largest possible variance
+- $Z_q$ is othogonal to the span of $V_1$ through $V(q-1)$
+- the sm of the squares is = 1
+
+### Example in R
+We can do PCA in R like this:
+```{R}
+data <- tibble(
+  x1 = rnorm(100, mean = 0, sd = 1),
+  x2 = x1 + rnorm(100, mean = 0, sd = 0.1)
+)
+
+pca <- princomp(data, cor = TRUE)
+summary(pca)
 ```
+
+```{R}
+screeplot(pca, type="l")
+```
+
+How to incorporate PCA into our regression analysis:
+
+
 
 
 
