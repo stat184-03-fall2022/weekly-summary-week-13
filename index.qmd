@@ -43,6 +43,8 @@ library(rpart)
 library(e1071) 
 library(luz) 
 library(torchvision)
+library(dimRed)
+library(RSpectra)
 ```
 
 ### PCA
@@ -89,6 +91,9 @@ screeplot(pca, type="l")
 ```
 
 How to incorporate PCA into our regression analysis:
+We can use the function prcomp() to perform PCA.
+
+
 
 
 
@@ -110,17 +115,42 @@ Today, I learnt the following concepts in class:
 1. Item 3
 :::
 
-Provide more concrete details here, e.g., 
+### NOnlinear dimension reduction
+```{R}
+generate_two_spirals <- function () {
+  set.seed(42)
+  n <- 500
+  noise <- 500
+  t <- (1:n) / n * 4 * pi
+  x1 <- t * (sin(t) + rnorm(n,0,noise))
+  x2 <- t*(cos(t) + rnorm(n,0,noise))
+  
 
-In class we learnt how to use the `map` function to create multiple regression diagnostic plots
-
-```{R results='hide', fig.height=4}
-par(mfcol=c(2, 3), mar=c(3.5, 3.5, 2, 1), mgp=c(2.4, 0.8, 0))
-mtcars %>%
-  split(.$cyl) %>%
-  map(~ lm(mpg ~ wt, data = .x)) %>%
-  map(function(x)plot(x, which=c(1, 2)))
+}  
+gener
 ```
+
+ISOmap stands for 
+Isometric
+manifold
+approximated and projection
+
+Theres t-SNE, UMAP, and MDS. They're useful for biostats and similar fields.
+
+You can use isomap in the RDRToolbox package.
+
+```{R}
+library(RDRToolbox)
+```
+
+```{R}
+isomap <- Isomap(df[,1:2] %>% as.matrix)
+```
+
+### Autoencoder
+One of the most popular techniques for dimension reduction. It does this by constructing the following neural network architecture:
+
+It takes a high dimensional dataset and then outputs it in 2 dimensions. It has an encoder which takes it from the original state to a compressed one and then the decoder sets it back to its original state.
 
 
 [^footnote]: You can include some footnotes here
